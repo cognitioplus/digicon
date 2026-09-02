@@ -1,3 +1,5 @@
+import { useState, type ReactNode } from 'react';
+
 import {
   Accessibility,
   ArrowRight,
@@ -6,6 +8,7 @@ import {
   HelpCircle,
   Lock,
   Mail,
+  Menu,
   Network,
   QrCode,
   Scale,
@@ -16,11 +19,14 @@ import {
   TrendingUp,
   Users,
   WalletCards,
+  X,
   Zap,
   type LucideIcon,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
+import { Logo } from '@/components/ui/Logo';
+import { useAuth } from '@/hooks/useAuth';
 import { navigateTo, useRouter } from '@/hooks/useRouter';
 
 interface Block {
@@ -697,6 +703,233 @@ function RelationshipCallout() {
         />
       </div>
     </aside>
+  );
+}
+
+const NAV_LINKS = [
+  { label: 'Features', path: '/#features' },
+  { label: 'How It Works', path: '/#how' },
+  { label: 'Pricing', path: '/pricing' },
+  { label: 'Blog', path: '/blog' },
+  { label: 'Customers', path: '/customers' },
+];
+
+const FOOTER_LINKS = [
+  { label: 'About', path: '/about' },
+  { label: 'Pricing', path: '/pricing' },
+  { label: 'Blog', path: '/blog' },
+  { label: 'Customers', path: '/customers' },
+  { label: 'FAQ', path: '/faq' },
+  { label: 'Support', path: '/support' },
+  { label: 'Terms', path: '/terms' },
+  { label: 'Privacy', path: '/privacy' },
+  { label: 'Cookies', path: '/cookies' },
+  { label: 'Accessibility', path: '/accessibility' },
+];
+
+interface PublicLayoutProps {
+  children: ReactNode;
+  activePath: string;
+}
+
+export function PublicLayout({ children, activePath }: PublicLayoutProps) {
+  const { user } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isActive = (path: string) => {
+    if (path.startsWith('/#')) return activePath === '/';
+    return activePath === path;
+  };
+
+  return (
+    <div className="min-h-screen bg-navy-980 text-white">
+      {/* Header */}
+      <header className="sticky top-0 z-40 glass-nav border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
+          <button
+            onClick={() => navigateTo('/')}
+            className="flex items-center gap-2"
+            aria-label="DigiCon home"
+          >
+            <Logo size={32} />
+          </button>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.path}
+                onClick={() => navigateTo(link.path)}
+                className={`px-3 py-2 rounded-lg text-sm font-ui font-medium transition-colors ${
+                  isActive(link.path)
+                    ? 'text-cyan-400'
+                    : 'text-white/50 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Desktop auth buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <Button
+                size="sm"
+                onClick={() => navigateTo('/dashboard')}
+              >
+                Dashboard
+                <ArrowRight size={15} />
+              </Button>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigateTo('/login')}
+                  className="text-sm font-ui font-medium text-white/60 hover:text-white transition-colors px-3 py-2"
+                >
+                  Sign In
+                </button>
+                <Button
+                  size="sm"
+                  onClick={() => navigateTo('/signup')}
+                >
+                  Get Started
+                  <ArrowRight size={15} />
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden p-2 text-white/60 hover:text-white"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile menu drawer */}
+      {mobileOpen && (
+        <div className="md:hidden fixed inset-0 z-50 animate-fade-in">
+          <div
+            className="absolute inset-0 bg-navy-980/80 backdrop-blur-sm"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div className="absolute right-0 top-0 bottom-0 w-72 glass-strong p-5 overflow-y-auto animate-slide-down">
+            <div className="flex items-center justify-between mb-6">
+              <Logo size={32} />
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-white/40 p-1"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="space-y-1 mb-6">
+              {NAV_LINKS.map((link) => (
+                <button
+                  key={link.path}
+                  onClick={() => {
+                    navigateTo(link.path);
+                    setMobileOpen(false);
+                  }}
+                  className={`w-full flex items-center px-3 py-2.5 rounded-xl font-ui font-medium text-sm transition-all ${
+                    isActive(link.path)
+                      ? 'bg-electric-500/15 text-cyan-300'
+                      : 'text-white/50 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </nav>
+            <div className="border-t border-white/10 pt-4 space-y-2">
+              {user ? (
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    navigateTo('/dashboard');
+                    setMobileOpen(false);
+                  }}
+                >
+                  Dashboard
+                  <ArrowRight size={15} />
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => {
+                      navigateTo('/login');
+                      setMobileOpen(false);
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      navigateTo('/signup');
+                      setMobileOpen(false);
+                    }}
+                  >
+                    Get Started
+                    <ArrowRight size={15} />
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Page content */}
+      <main>{children}</main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-navy-980">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+            <div className="max-w-sm">
+              <Logo size={32} />
+              <p className="text-sm text-white/40 font-body mt-4 leading-relaxed">
+                More than a digital business card. Create your professional
+                identity, share it instantly, capture the people you meet, and
+                follow up with intention.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {FOOTER_LINKS.map((link) => (
+                <button
+                  key={link.path}
+                  onClick={() => navigateTo(link.path)}
+                  className="text-sm text-white/40 hover:text-white/70 font-body transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mt-10 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-white/30 font-body">
+              &copy; {new Date().getFullYear()} DigiCon. The card is the entry
+              point. The relationship is the product.
+            </p>
+            <button
+              onClick={() => navigateTo('/signup')}
+              className="text-xs text-cyan-400 font-ui font-medium hover:text-cyan-300 transition-colors"
+            >
+              Create Your DigiCon
+            </button>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
 

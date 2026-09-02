@@ -1,6 +1,6 @@
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { useRouter, matchRoute, navigateTo } from '@/hooks/useRouter';
-import { PublicLayout } from '@/layouts/PublicLayout';
+import { PublicLayout, InfoPage } from '@/layouts/PublicLayout';
 
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
@@ -13,7 +13,6 @@ import { BlogPostPage } from '@/pages/public/BlogPostPage';
 import { CustomersPage } from '@/pages/public/CustomersPage';
 import { CheckoutPage } from '@/pages/public/CheckoutPage';
 import { PublicCardPage } from '@/pages/public/PublicCardPage';
-import { InfoPage } from '@/pages/public/InfoPage';
 
 import { DashboardPage } from '@/pages/app/DashboardPage';
 import { CardsPage } from '@/pages/app/CardsPage';
