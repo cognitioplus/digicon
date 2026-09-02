@@ -19,9 +19,20 @@ export function PricingPage() {
             <h2 className="font-heading font-bold text-xl text-white">{plan.name}</h2>
             <p className="text-white/40 text-sm font-body mt-1 min-h-[40px]">{plan.tagline}</p>
             <div className="mt-5 mb-5"><span className="font-heading font-bold text-4xl text-white">${plan.price}</span><span className="text-white/40 text-sm"> / {plan.period}</span></div>
-            <Button variant={plan.id === 'business' ? 'gold' : 'primary'} className="w-full" onClick={() => navigateTo(plan.id === 'free' ? '/signup' : '/checkout')}>
-              {plan.id === 'free' ? 'Start Free' : 'Choose ' + plan.name}<ArrowRight className="w-4 h-4" />
-            </Button>
+            <Button
+  variant={plan.id === 'business' ? 'gold' : 'primary'}
+  className="w-full"
+  onClick={() =>
+    navigateTo(
+      plan.id === 'free'
+        ? '/signup'
+        : `/checkout?plan=${encodeURIComponent(plan.id)}`
+    )
+  }
+>
+  {plan.id === 'free' ? 'Start Free' : `Choose ${plan.name}`}
+  <ArrowRight className="w-4 h-4" />
+</Button>
             <div className="mt-6 space-y-3">{plan.features.map((feature) => <div key={feature} className="flex items-start gap-2 text-sm text-white/60 font-body"><Check className="w-4 h-4 text-success-400 mt-0.5 shrink-0" />{feature}</div>)}</div>
           </div>
         ))}
