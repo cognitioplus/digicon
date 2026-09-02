@@ -14,6 +14,7 @@ const PUBLIC_NAV = [
   { label: 'Features', path: '/#features' },
   { label: 'Pricing', path: '/pricing' },
   { label: 'Blog', path: '/blog' },
+  { label: 'Customers', path: '/customers' },
   { label: 'About', path: '/about' },
   { label: 'FAQ', path: '/faq' },
 ];
@@ -25,9 +26,14 @@ export function PublicLayout({ children, activePath }: PublicLayoutProps) {
     <div className="min-h-screen bg-navy-980 text-white">
       <header className="sticky top-0 z-40 glass-nav border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
-          <button onClick={() => navigateTo('/')}>
-            <Logo size={36} />
-          </button>
+         <button
+  type="button"
+  aria-label="DigiCon home"
+  onClick={() => navigateTo('/')}
+  className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+>
+  <Logo size={36} />
+</button>
           <nav className="hidden md:flex items-center gap-6">
             {PUBLIC_NAV.map((item) => (
               <button
