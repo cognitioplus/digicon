@@ -33,7 +33,7 @@ export function PublicLayout({ children, activePath }: PublicLayoutProps) {
   className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
 >
   <Logo size={36} />
-</button>
+  </button>
           <nav className="hidden md:flex items-center gap-6">
             {PUBLIC_NAV.map((item) => (
               <button
@@ -46,7 +46,7 @@ export function PublicLayout({ children, activePath }: PublicLayoutProps) {
                 {item.label}
               </button>
             ))}
-          </nav>
+        </nav>
           <div className="flex items-center gap-3">
             {user ? (
               <Button size="sm" onClick={() => navigateTo('/dashboard')}>Dashboard</Button>
