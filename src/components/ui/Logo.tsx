@@ -12,7 +12,7 @@ export function Logo({ size = 40, showText = true, className = '' }: LogoProps) 
         height={size}
         viewBox="0 0 100 100"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://cognitioplus.github.io/digicon/public/assets/images/favicon.svg"
         className="flex-shrink-0"
       >
         <defs>
